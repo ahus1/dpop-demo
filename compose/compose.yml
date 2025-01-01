@@ -6,20 +6,20 @@ services:
       - keycloak
     build: httpd
     ports:
-      - "8000:80"
-      - "8001:81"
+      - "8000"
     volumes:
-      - ./httpd/auth_openidc.conf:/etc/httpd/conf.d/auth_openidc.conf
-      - ./httpd/log:/var/log/httpd
+      - ./httpd/auth_openidc.conf:/etc/apache2/conf-enabled/auth_openidc.conf:Z
+      - ./httpd/log:/var/log/apache2:Z
     restart: unless-stopped
+    network_mode: host
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.7
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
-      KC_HEALTH_ENABLED: true
-      KC_METRICS_ENABLED: true
-      KC_LOG_LEVEL: "INFO,io.vertx:debug"
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+      KC_LOG_LEVEL: "INFO,io.vertx:trace,org.keycloak:trace,io.netty:trace"
     command: "start-dev --features=dpop"
     healthcheck:
       test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\nHost: localhost\\nConnection: close\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
@@ -27,7 +27,10 @@ services:
       timeout: 5s
       retries: 20
     volumes:
-      - ./keycloak/data:/opt/keycloak/data
+      - kc_data:/opt/keycloak/data
     ports:
       - "8080:8080"
       - "9000:9000"
+    network_mode: host
+volumes:
+  kc_data:
