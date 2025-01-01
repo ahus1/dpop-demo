@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  httpd:
+    depends_on:
+      - keycloak
+    build: httpd
+    ports:
+      - "8000:80"
+      - "8001:81"
+    volumes:
+      - ./httpd/auth_openidc.conf:/etc/httpd/conf.d/auth_openidc.conf
+      - ./httpd/log:/var/log/httpd
+    restart: unless-stopped
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+      KC_LOG_LEVEL: "INFO,io.vertx:debug"
+    command: "start-dev --features=dpop"
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\nHost: localhost\\nConnection: close\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - ./keycloak/data:/opt/keycloak/data
+    ports:
+      - "8080:8080"
+      - "9000:9000"

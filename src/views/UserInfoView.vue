@@ -8,6 +8,9 @@ import UserInfo from "@/components/UserInfo.vue";
   <main>
     <Suspense>
       <UserInfo />
+      <template #fallback>
+        Loading...
+      </template>
     </Suspense>
   </main>
 </template>

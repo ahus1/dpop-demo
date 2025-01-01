@@ -1,8 +1,10 @@
 # Steps
 
 * Run Keycloak with feature dpop enabled
-* Create client
-* Activate DPoP for the client to enforce it - otherwise the client can choose to use DPoP when creating the tokens via the code-to-token or the refresh token request
+* Create client with URLs http://localhost:5173/ and http://localhost:4173/
+* Activate DPoP for the client to enforce it - otherwise the client can choose to use DPoP when creating the tokens via the code-to-token or the refresh token reques
+
+* https://danielfett.de/2020/05/04/dpop-attacker-model/
 
 * Attacks mitigated -> Access token stolen or pre-computed at client, replay attacks, exchange token with different URL
 * Not mitigated -> XSS to the client (even if key is safe, the attacker can create arbitrary access tokens)

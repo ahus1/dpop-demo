@@ -104,8 +104,12 @@ export function initState(config: Configuration, options: DPoPOptions, tokens: T
 
 async function refreshOnDemand() {
   if (state.tokens.expiresIn() === 0) {
-    state.tokens = await client.refreshTokenGrant(state.config, state.tokens.refresh_token!, undefined, state.options);
+    await refresh();
   }
+}
+
+export async function refresh() {
+  state.tokens = await client.refreshTokenGrant(state.config, state.tokens.refresh_token!, undefined, state.options);
 }
 
 export async function fetchUserInfo(): Promise<oauth.UserInfoResponse> {
