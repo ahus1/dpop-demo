@@ -21,11 +21,6 @@ services:
       KC_METRICS_ENABLED: "true"
       KC_LOG_LEVEL: "INFO,io.vertx:trace,org.keycloak:trace,io.netty:trace"
     command: "start-dev --features=dpop"
-    healthcheck:
-      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\nHost: localhost\\nConnection: close\\n' >&3 && cat <&3 | grep -q '200 OK'" ]
-      interval: 10s
-      timeout: 5s
-      retries: 20
     volumes:
       - kc_data:/opt/keycloak/data
     ports:
