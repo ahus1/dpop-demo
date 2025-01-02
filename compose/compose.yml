@@ -19,13 +19,14 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
-      KC_LOG_LEVEL: "INFO,io.vertx:trace,org.keycloak:trace,io.netty:trace"
+      DEBUG: "true"
     command: "start-dev --features=dpop"
     volumes:
       - kc_data:/opt/keycloak/data
     ports:
       - "8080:8080"
       - "9000:9000"
+      - "8787:8787"
     network_mode: host
 volumes:
   kc_data:
