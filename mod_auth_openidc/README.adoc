@@ -1,0 +1,29 @@
+= Demo container for mod_auth_oidc
+
+== What to see here
+
+https://github.com/OpenIDC/mod_auth_openidc[mod_auth_openidc] is an OpenID Certified™ authentication and authorization module for the Apache 2.x HTTP server that implements the OpenID Connect Relying Party functionality.
+
+You can configure it that some or all browser requests to Apache HTTP would require an OIDC authenticated user.
+
+== Starting the demo
+
+. Run the following command to build and start the web server:
++
+[source,bash]
+----
+podman compose up --build --force-recreate
+----
+
+. Open your browser on http://localhost:8000
+
+. Click on *Login*
+
+. Login in using username `test` and password `test-password`
+
+. Inspect the HTTP request headers that were added by mod_auth_openidc
+
+. Click on *Logout*
+
+
+

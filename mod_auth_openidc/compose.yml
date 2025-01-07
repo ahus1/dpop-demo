@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  httpd:
+    build: httpd_with_mod_auth_openidc
+    volumes:
+      - ./httpd_with_mod_auth_openidc/auth_openidc.conf:/etc/apache2/conf-enabled/auth_openidc.conf:Z
+      - ./httpd_with_mod_auth_openidc/log:/var/log/apache2:Z
+      - ./html:/var/www/html:Z
+    network_mode: host
+volumes:
+  kc_data:

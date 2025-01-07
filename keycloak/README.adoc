@@ -1,0 +1,26 @@
+= Demo container for Keycloak
+
+== What to see here
+
+https://github.com/OpenIDC/mod_auth_openidc[Keycloak] is an OpenID Connect identity provider that supports among other extensions DPoP.
+
+== Starting the demo
+
+. Run the following command to build and start Keycloak:
++
+[source,bash]
+----
+podman compose up --build --force-recreate
+----
+
+. Open your browser on http://localhost:8080
+
+. Log in using user name `admin` with password `admin`
+
+. Run the following script to create the clients
++
+[source,bash]
+----
+podman exec keycloak_keycloak_1 /create-client.sh
+----
+

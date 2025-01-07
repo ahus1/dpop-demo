@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.7
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_METRICS_ENABLED: "true"
+    command: "start --http-enabled true --hostname-strict false --features=dpop"
+    volumes:
+      - kc_data:/opt/keycloak/data
+      - ./create-clients.sh:/create-clients.sh:Z
+    network_mode: host
+volumes:
+  kc_data:
