@@ -33,7 +33,6 @@ import com.nimbusds.oauth2.sdk.token.DPoPAccessToken;
 import com.nimbusds.oauth2.sdk.util.singleuse.SingleUseChecker;
 import com.nimbusds.openid.connect.sdk.Nonce;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.OPTIONS;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
@@ -83,8 +82,8 @@ public class GreetingResource {
                     proofMaxAgeSeconds,
                     singleUseChecker);
 
-    ClientID clientID = new ClientID("quarkus");
-    Secret clientSecret = new Secret("Mzoak4ttFra0hVQmIAPcarkQxAezKvip");
+    ClientID clientID = new ClientID("nimbus-quarkus");
+    Secret clientSecret = new Secret("nimbus-quarkus-secret");
     ClientAuthentication clientAuth = new ClientSecretBasic(clientID, clientSecret);
 
     @Context
@@ -100,7 +99,7 @@ public class GreetingResource {
             @RestHeader("Authorization") String authorization
     ) throws ParseException, GeneralException, URISyntaxException, IOException, InvalidDPoPProofException, AccessTokenValidationException, JOSEException {
 
-        Issuer issuer = new Issuer("http://localhost:8080/realms/master");
+        Issuer issuer = new Issuer("http://localhost:8080/realms/test");
         AuthorizationServerMetadata metadata = AuthorizationServerMetadata.resolve(issuer);
 
         // Verify some request

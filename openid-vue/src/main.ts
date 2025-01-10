@@ -9,8 +9,8 @@ import * as clientWithState from './auth'
 // Prerequisites
 
 // Authorization server's Issuer Identifier URL
-let server: URL = new URL('http://localhost:8080/realms/master')
-let clientId: string = 'test'
+let server: URL = new URL('http://localhost:8080/realms/test')
+let clientId: string = 'openid-vue'
 // end of prerequisites
 
 await clientWithState.init(server, clientId, () => {
@@ -22,6 +22,6 @@ await clientWithState.init(server, clientId, () => {
     app.mount('#app')
 
     // Remove authentication code response from URL
-    router.replace({ path: window.location.pathname })
+    router.push({ path: window.location.pathname })
 
 });

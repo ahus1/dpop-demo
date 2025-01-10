@@ -36,3 +36,48 @@ CID=$(kcadm.sh create clients -r $REALM_NAME -i -f - <<EOF
 EOF
 )
 echo "INFO: Created new client 'mod-auth-oidc': ${CID}"
+
+# Don't enforce DPoP, otherwise token introspection endpoint doesn't work
+CID=$(kcadm.sh create clients -r $REALM_NAME -i -f - <<EOF
+{
+  "clientId": "nimbus-quarkus",
+  "enabled": true,
+  "clientAuthenticatorType": "client-secret",
+  "secret": "nimbus-quarkus-secret",
+  "redirectUris": [
+    "*"
+  ],
+  "serviceAccountsEnabled": true,
+  "publicClient": false,
+  "protocol": "openid-connect",
+  "attributes": {
+    "post.logout.redirect.uris": "+",
+    "dpop.bound.access.tokens": "false"
+  }
+}
+EOF
+)
+echo "INFO: Created new client 'nimbus-quarkus': ${CID}"
+
+CID=$(kcadm.sh create clients -r $REALM_NAME -i -f - <<EOF
+{
+  "clientId": "openid-vue",
+  "enabled": true,
+  "rootUrl": "http://localhost:5173/",
+  "baseUrl": "http://localhost:5173/",
+  "redirectUris": [
+    "http://localhost:5173/*"
+  ],
+  "webOrigins": [
+    "+"
+  ],
+  "publicClient": true,
+  "protocol": "openid-connect",
+  "attributes": {
+    "post.logout.redirect.uris": "+",
+    "dpop.bound.access.tokens": "true"
+  }
+}
+EOF
+)
+echo "INFO: Created new client 'openid-vue': ${CID}"

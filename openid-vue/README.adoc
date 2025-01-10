@@ -1,0 +1,30 @@
+= Demo for openid-client in a Vue app
+
+== What to see here
+
+https://github.com/panva/openid-client[openid-client] used in a https://vuejs.org[Vue] app.
+
+== Prerequisites
+
+* Keycloak running
+* Node
+
+== Starting the demo
+
+. Install Node dependencies
++
+[source,bash]
+----
+npm install
+----
+
+. Run the app in development mode
++
+[source,bash]
+----
+npm run dev
+----
+
+. Open your browser on http://localhost:5173/
+
+
