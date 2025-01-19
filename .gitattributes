@@ -1,0 +1,6 @@
+# Shell scripts need to be LF when you run them on *inux.
+# The mvnw is the Maven wrapper file, gradlew the Gradle wrapper file.
+*.sh text eol=lf
+mvnw text eol=lf
+gradlew text eol=lf
+*.cmd text eol=crlf

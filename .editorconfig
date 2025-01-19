@@ -1,0 +1,12 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+root = true
+
+[{*.sh,mvnw}]
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{cmd,bat}]
+# batch files on Windows should stay with CRLF
+end_of_line = crlf
