@@ -22,7 +22,8 @@ Each sub-folder contains a README.adoc on how to run each of the components.
 
 == Prerequisites
 
-* Java
+* Java 21
 * Podman
+* Node 22
 * Container networking mode "`host`" (only works on Linux)
 
