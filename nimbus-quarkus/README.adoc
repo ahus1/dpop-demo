@@ -10,6 +10,15 @@ This uses https://github.com/OpenIDC/mod_auth_openidc[nimbus SDK] in a https://q
 * Start the SPA
 * Java 21
 
+On Windows, when running on Podman set the following Maven Option:
+
+[source,shell script]
+----
+export MAVEN_OPTS=-Djava.net.preferIPv6Addresses=true
+----
+
+(Preferring IPv6 as on Windows with Podman WSL2 only IPv6 is bound - see https://github.com/containers/podman/discussions/20543)
+
 == Starting the demo
 
 . Run the following command to build and start the server:

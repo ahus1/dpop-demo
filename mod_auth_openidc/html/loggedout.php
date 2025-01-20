@@ -3,7 +3,7 @@
 
 <h1>Logged Out</h1>
 
-<a href="/protected">Login</a>
+<a href="/">Welcome</a>
 
 </body>
 </html>

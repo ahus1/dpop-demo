@@ -43,6 +43,7 @@ import org.jboss.resteasy.reactive.RestHeader;
 import org.jboss.resteasy.reactive.RestPath;
 
 import java.io.IOException;
+import java.net.ResponseCache;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -109,7 +110,7 @@ public class GreetingResource {
         URI httpURI = uriInfo.getRequestUri();
 
         if (dpop == null) {
-            throw new RuntimeException("dpop is null");
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
 
         // The DPoP proof, obtained from the HTTP DPoP header
