@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import * as clientWithState from '../auth'
-await clientWithState.refresh()
-const res = await clientWithState.fetchUserInfo()
+const res = clientWithState.serverMetadata()
 </script>
 
 <template>
-  User Info:
-<pre>
+  Server Info:
+  <pre>
 {{ JSON.stringify(res, null, 2) }}
-</pre>
+  </pre>
 </template>

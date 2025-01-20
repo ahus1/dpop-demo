@@ -11,5 +11,7 @@ const res = await clientWithState.fetchProtectedResource(new URL('http://localho
 
 <template>
   Protected Resource:
-  {{ res }}
+<pre>
+{{ res }}
+</pre>
 </template>

@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
       <nav>
         <RouterLink to="/">UserInfo</RouterLink>
+        <RouterLink to="/serverInfo">ServerInfo</RouterLink>
         <RouterLink to="/protectedResource">ProtectedResource</RouterLink>
       </nav>
     </div>

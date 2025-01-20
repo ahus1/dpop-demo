@@ -121,3 +121,7 @@ export async function fetchProtectedResource(url: URL, method: string, body?: Fe
   await refreshOnDemand();
   return client.fetchProtectedResource(state.config, state.tokens.access_token, url, method, body, headers, state.options);
 }
+
+export function serverMetadata() {
+  return state.config.serverMetadata()
+}

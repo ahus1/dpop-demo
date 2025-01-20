@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/UserInfoView.vue'
+import ServerInfoView from '../views/ServerInfoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +9,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/serverInfo',
+      name: 'server-info',
+      component: ServerInfoView,
     },
     {
       path: '/protectedResource',
