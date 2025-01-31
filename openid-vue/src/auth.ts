@@ -122,6 +122,16 @@ export async function fetchProtectedResource(url: URL, method: string, body?: Fe
   return client.fetchProtectedResource(state.config, state.tokens.access_token, url, method, body, headers, state.options);
 }
 
+export function logout() {
+  let params : Record<string, string> = {
+    post_logout_redirect_uri: window.location.href,
+  };
+  if (state.tokens.id_token) {
+    params.id_token_hint = state.tokens.id_token
+  }
+  window.location.href = client.buildEndSessionUrl(state.config, params).href;
+}
+
 export function serverMetadata() {
   return state.config.serverMetadata()
 }

@@ -25,5 +25,5 @@ Each sub-folder contains a README.adoc on how to run each of the components.
 * Java 21
 * Podman
 * Node 22
-* Container networking mode "`host`" (only works on Linux)
+* Container networking mode "`host`" (only works on Linux, or Podman on Windows)
 

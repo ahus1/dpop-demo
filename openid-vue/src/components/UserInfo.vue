@@ -9,4 +9,7 @@ const res = await clientWithState.fetchUserInfo()
 <pre>
 {{ JSON.stringify(res, null, 2) }}
 </pre>
+
+<a @click="clientWithState.logout()">log out</a>
+
 </template>

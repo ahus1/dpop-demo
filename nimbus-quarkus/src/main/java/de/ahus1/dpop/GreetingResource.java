@@ -161,7 +161,7 @@ public class GreetingResource {
 
         nonce = null;
 
-        return Response.ok("Hello from Quarkus REST").build();
+        return Response.ok("Hello from Quarkus REST\nToken introspection, DPoP and Nonce are good!").build();
     }
 
     private AccessToken clientAccessToken(AuthorizationServerMetadata metadata) throws URISyntaxException, IOException, com.nimbusds.oauth2.sdk.ParseException {
