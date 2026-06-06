@@ -13,7 +13,9 @@ fi
 
 kcadm.sh create realms -s realm=test -s enabled=true
 
-kcadm.sh create users -s username=test -s enabled=true -s firstName=Theo -s lastName=Tester -s email=test@example.com -r $REALM_NAME
+USERID=$(kcadm.sh create users -s username=test -s enabled=true -s firstName=Theo -s lastName=Tester -s email=test@example.com -r $REALM_NAME -i)
+echo "INFO: Created new user 'test': ${USERID}"
+
 kcadm.sh set-password -r $REALM_NAME --username test --new-password test-password
 
 CID=$(kcadm.sh create clients -r $REALM_NAME -i -f - <<EOF
@@ -58,6 +60,18 @@ CID=$(kcadm.sh create clients -r $REALM_NAME -i -f - <<EOF
 EOF
 )
 echo "INFO: Created new client 'nimbus-quarkus': ${CID}"
+
+CRID=$(kcadm.sh create clients/${CID}/roles -r $REALM_NAME -i -f - <<EOF
+{"name":"user","description":"Standard user role"}
+EOF
+)
+echo "INFO: Created new client-role 'user': ${CRID}"
+
+kcadm.sh add-roles \
+  -r $REALM_NAME \
+  --uusername test \
+  --cclientid nimbus-quarkus \
+  --rolename user
 
 CID=$(kcadm.sh create clients -r $REALM_NAME -i -f - <<EOF
 {

@@ -39,6 +39,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.reactive.RestHeader;
 import org.jboss.resteasy.reactive.RestPath;
 
@@ -56,6 +57,8 @@ import java.util.UUID;
 
 @Path("/hello")
 public class GreetingResource {
+
+    private final Logger log = Logger.getLogger(GreetingResource.class);
 
     // The accepted DPoP proof JWS algorithms
     Set<JWSAlgorithm> acceptedAlgs = new HashSet<>(
@@ -136,6 +139,16 @@ public class GreetingResource {
         HTTPResponse httpResponse = httpRequest.send();
 
         TokenIntrospectionResponse tokenIntrospectionResponse = TokenIntrospectionResponse.parse(httpResponse);
+
+        if (!tokenIntrospectionResponse.indicatesSuccess()) {
+            log.warn("Token introspection not successful");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        if (!tokenIntrospectionResponse.toSuccessResponse().isActive()) {
+            log.warn("Token not active");
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
 
         // The DPoP proof issuer, typically the client ID obtained from the
         // access token introspection

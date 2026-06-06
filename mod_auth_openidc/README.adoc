@@ -12,7 +12,7 @@ You can configure it that some or all browser requests to Apache HTTP would requ
 +
 [source,bash]
 ----
-podman compose up --build --force-recreate
+podman-compose up --build --force-recreate
 ----
 
 . Open your browser on http://localhost:8000

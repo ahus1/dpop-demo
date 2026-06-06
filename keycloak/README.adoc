@@ -10,7 +10,7 @@ https://github.com/OpenIDC/mod_auth_openidc[Keycloak] is an OpenID Connect ident
 +
 [source,bash]
 ----
-podman compose up --build --force-recreate
+podman-compose up --build --force-recreate
 ----
 
 . Open your browser on http://localhost:8080
@@ -21,6 +21,12 @@ podman compose up --build --force-recreate
 +
 [source,bash]
 ----
-podman exec keycloak-keycloak-1 ./create-clients.sh
+podman exec keycloak_keycloak_1 ./create-clients.sh
 ----
 
+== Resetting the database
+
+[source,bash]
+----
+podman-compose down --volumes
+----
