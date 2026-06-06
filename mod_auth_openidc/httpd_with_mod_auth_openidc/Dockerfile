@@ -1,11 +1,11 @@
-FROM debian:bookworm
-ARG MOD_AUTH_OPENIDC_VERSION=2.4.16.6
+FROM debian:trixie
+ARG MOD_AUTH_OPENIDC_VERSION=2.4.19.3
 
 RUN apt update
 RUN apt-get install --assume-yes apache2 curl php-common libapache2-mod-php php-cli
 
 # Download pre-build binaries from the project
-RUN curl https://github.com/OpenIDC/mod_auth_openidc/releases/download/v${MOD_AUTH_OPENIDC_VERSION}/libapache2-mod-auth-openidc_${MOD_AUTH_OPENIDC_VERSION}-1.bookworm_amd64.deb -L -o mod_auth_openidc.deb
+RUN curl -f https://github.com/OpenIDC/mod_auth_openidc/releases/download/v${MOD_AUTH_OPENIDC_VERSION}/libapache2-mod-auth-openidc_${MOD_AUTH_OPENIDC_VERSION}-1.trixie_amd64.deb -L -o mod_auth_openidc.deb
 # Install the binary, and install all missing dependencies
 RUN dpkg -i mod_auth_openidc.deb || apt-get --fix-broken install --assume-yes
 
