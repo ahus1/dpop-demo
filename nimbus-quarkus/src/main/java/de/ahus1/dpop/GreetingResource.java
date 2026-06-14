@@ -161,7 +161,7 @@ public class GreetingResource {
         if (nonce == null || !Objects.equals(dPoPProof.getJWTClaimsSet().getClaim("nonce"), nonce.getValue())) {
             nonce = new Nonce(UUID.randomUUID().toString());
             return Response
-                    .status(401)
+                    .status(400)
                     .type(MediaType.APPLICATION_JSON)
                     .header("WWW-Authenticate", "DPoP error=\"use_dpop_nonce\",\n" +
                                                 "   error_description=\"Resource server requires nonce in DPoP proof\"")
