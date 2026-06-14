@@ -1,0 +1,35 @@
+= Walk-Through SPA
+
+This walk-through will show you different items in the SPA:
+
+. Check IDP Server-info at http://localhost:8080/realms/test/.well-known/openid-configuration:
++
+`dpop_signing_alg_values_supported` -> DPoP is enabled
+
+. Check time sync between SPA browser, IdP and endpoints.
+You might need to instruct your library with clock offsets:
+* DPoP proof lifetime: 10 seconds
+* Keycloak clock skew tolerance: 15 seconds
+
+. Generate DPoP key pair - non-extractable is the default. Use a signature algorithm supported by the IdP and the clients (`auth.js`)
+
+. `DPoP` HTTP header contains key, data and a signature.
+
+. All access and refresh tokens will contain `cnf.jkt` to link the token to the hash of key.
+
+. Data of the `DPoP` header will be specific to the HTTP request (method, path, possibly nonce) to avoid usage in different scenarios or replay.
+
+. On API, update CORS settings:
+* Incoming headers to allow from JavaScript:
+** `DPoP`: For library to send DPoP proof
+** `Authorization`: To send the access token
+** `User-Agent`: Needed on Firefox, as it is strict when a library adds its own user agent header.
+* Outgoing headers to expose to JavaScript:
+** `DPoP-Nonce`: JavaScript library needs to read the nonce of a 401 error
+** `WWW-Authenticate`: JavaScript library needs to read header of a 401 error
+
+. Token introspection: Works as before
+
+. DPoP checking of `cnf.jkt` must be done in the resource server!
+
+. Nonce generation and verification must be done in the resource server!
