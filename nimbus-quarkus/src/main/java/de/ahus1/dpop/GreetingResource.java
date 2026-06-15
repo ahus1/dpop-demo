@@ -3,16 +3,9 @@ package de.ahus1.dpop;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jwt.SignedJWT;
-import com.nimbusds.oauth2.sdk.AccessTokenResponse;
-import com.nimbusds.oauth2.sdk.AuthorizationGrant;
-import com.nimbusds.oauth2.sdk.ClientCredentialsGrant;
 import com.nimbusds.oauth2.sdk.GeneralException;
-import com.nimbusds.oauth2.sdk.Scope;
-import com.nimbusds.oauth2.sdk.TokenErrorResponse;
 import com.nimbusds.oauth2.sdk.TokenIntrospectionRequest;
 import com.nimbusds.oauth2.sdk.TokenIntrospectionResponse;
-import com.nimbusds.oauth2.sdk.TokenRequest;
-import com.nimbusds.oauth2.sdk.TokenResponse;
 import com.nimbusds.oauth2.sdk.as.AuthorizationServerMetadata;
 import com.nimbusds.oauth2.sdk.auth.ClientAuthentication;
 import com.nimbusds.oauth2.sdk.auth.ClientSecretBasic;
@@ -28,7 +21,6 @@ import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import com.nimbusds.oauth2.sdk.id.ClientID;
 import com.nimbusds.oauth2.sdk.id.Issuer;
 import com.nimbusds.oauth2.sdk.id.JWTID;
-import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.nimbusds.oauth2.sdk.token.DPoPAccessToken;
 import com.nimbusds.oauth2.sdk.util.singleuse.SingleUseChecker;
 import com.nimbusds.openid.connect.sdk.Nonce;
@@ -44,7 +36,6 @@ import org.jboss.resteasy.reactive.RestHeader;
 import org.jboss.resteasy.reactive.RestPath;
 
 import java.io.IOException;
-import java.net.ResponseCache;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -125,9 +116,6 @@ public class GreetingResource {
         // The introspection endpoint
         URI introspectionEndpoint = metadata.getIntrospectionEndpointURI();
 
-        // Token to access the introspection endpoint, may need to be refreshed
-        AccessToken accessToken = clientAccessToken(metadata);
-
         // Compose the introspection call
         HTTPRequest httpRequest = new TokenIntrospectionRequest(
                 introspectionEndpoint,
@@ -161,7 +149,7 @@ public class GreetingResource {
         if (nonce == null || !Objects.equals(dPoPProof.getJWTClaimsSet().getClaim("nonce"), nonce.getValue())) {
             nonce = new Nonce(UUID.randomUUID().toString());
             return Response
-                    .status(400)
+                    .status(401) // RP replies with 401, AS with 400
                     .type(MediaType.APPLICATION_JSON)
                     .header("WWW-Authenticate", "DPoP error=\"use_dpop_nonce\",\n" +
                                                 "   error_description=\"Resource server requires nonce in DPoP proof\"")
@@ -177,35 +165,4 @@ public class GreetingResource {
         return Response.ok("Hello from Quarkus REST\nToken introspection, DPoP and Nonce are good!").build();
     }
 
-    private AccessToken clientAccessToken(AuthorizationServerMetadata metadata) throws URISyntaxException, IOException, com.nimbusds.oauth2.sdk.ParseException {
-        // Construct the client credentials grant
-        AuthorizationGrant clientGrant = new ClientCredentialsGrant();
-
-        // The credentials to authenticate the client at the token endpoint
-
-
-        // The request scope for the token (may be optional)
-        Scope scope = new Scope();
-
-        // The token endpoint
-        URI tokenEndpoint = metadata.getTokenEndpointURI();
-
-        // Make the token request
-        TokenRequest request = new TokenRequest(tokenEndpoint, clientAuth, clientGrant, scope);
-
-        TokenResponse response = TokenResponse.parse(request.toHTTPRequest().send());
-
-        if (!response.indicatesSuccess()) {
-            // We got an error response...
-            TokenErrorResponse errorResponse = response.toErrorResponse();
-            throw new RuntimeException(errorResponse.toErrorResponse().toString());
-        }
-
-        AccessTokenResponse successResponse = response.toSuccessResponse();
-
-        // Get the access token
-        AccessToken accessToken = successResponse.getTokens().getAccessToken();
-
-        return accessToken;
-    }
 }
